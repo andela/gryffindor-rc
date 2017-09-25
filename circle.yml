@@ -17,6 +17,7 @@ dependencies:
 
 test:
   override:
+    - mkdir $HOME/reaction
     - cd $HOME/reaction
     - meteor npm install
     - SERVER_TEST_REPORTER="dot" meteor test --once --full-app --headless --driver-package dispatch:mocha
