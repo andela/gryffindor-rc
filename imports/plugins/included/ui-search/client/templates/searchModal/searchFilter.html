@@ -1,10 +1,47 @@
 <template name="sortByRange">
-    <div class="sorts" id="sortByRange">
-        <strong style="color: #3F2222">Sort by:&nbsp;</strong>
-        <select id="sort-value">
+  <div class="sorts" id="sortByRange">
+    <strong style="color: #3F2222">Sort by:&nbsp;</strong>
+    <select id="sort-value">
             <option value="null"><strong>Price Range</strong></option>
             <option value="ASC"><strong>Lowest price</strong></option>
             <option value="DESC"><strong>Highest price</strong></option>
         </select>
+  </div>
+</template>
+
+<template name="searchFilter">
+  <div class="hidden" id="searchFilter">
+    <div class="container searchContainer">
+      <div class="row">
+        <div class="col-md-6">
+          <label class="transform">Price</label>
+          <div class="rui select">
+            <select id="price-filter">
+            <option value="null" disabled selected>Filter by price</option>
+            <option value="all">All Price</option>
+            <option value="0 - 4999">Below ₦5000 </option>
+            <option value="5000 - 10000">₦5000 - ₦9999 </option>
+            <option value="10000 - 49999">₦10000 - ₦49999 </option>
+            <option value="50000 - 99999">₦50000 - ₦99999 </option>
+            <option value="100000 - 200000">₦100000 - ₦200000 </option>
+            <option value="100000 - 200000">Above ₦200000 </option>
+            </select>
+          </div>
+        </div>
+<div class="col-md-6">
+        <label class="transform">Vendor</label>
+        <div class="rui select">
+          <select id="brand-filter">
+               <option value="null" selected disabled>Filter by vendor</option>
+               <option value="all">All vendors</option>
+                {{#each brand in getBrands productSearchResults }}
+               <option value="{{brand}}">{{brand}}</option>
+               {{/each}}
+             </select>
+        </div>
+      </div>
+      </div>
+
     </div>
+  </div>
 </template>
