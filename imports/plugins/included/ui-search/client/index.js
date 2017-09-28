@@ -2,8 +2,11 @@
 import "./templates/searchModal/searchModal.html";
 import "./templates/searchModal/searchModal.js";
 import "./templates/searchModal/searchInput.html";
+import "./templates/searchModal/searchInput.js";
 import "./templates/searchModal/searchTypeToggle.html";
+import "./templates/searchModal/searchTypeToggle.js";
 import "./templates/searchModal/searchResults.html";
+import "./templates/searchModal/inputSearch.js";
 
 // Product Search
 import "./templates/productSearch/productResults.html";
