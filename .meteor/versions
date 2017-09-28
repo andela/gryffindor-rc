@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 abernix:minifier-js@2.1.0
 abernix:standard-minifier-js@2.1.0
+=======
+>>>>>>> initial-commit
 accounts-base@1.3.3
 accounts-facebook@1.2.1
 accounts-google@1.2.0
@@ -58,7 +61,10 @@ check@1.2.5
 chuangbo:cookie@1.1.0
 coffeescript@1.12.7_1
 coffeescript-compiler@1.12.7_1
+<<<<<<< HEAD
 dandv:caret-position@2.1.1
+=======
+>>>>>>> initial-commit
 dburles:factory@1.1.0
 ddp@1.3.1
 ddp-client@2.1.3
@@ -115,8 +121,13 @@ meteorhacks:picker@1.0.3
 meteorhacks:ssr@2.2.0
 meteorhacks:subs-manager@1.6.4
 minifier-css@1.2.16
+<<<<<<< HEAD
 minimongo@1.3.2
 mizzao:autocomplete@0.5.1
+=======
+minifier-js@2.1.4
+minimongo@1.3.2
+>>>>>>> initial-commit
 mobile-experience@1.0.5
 mobile-status-bar@1.0.14
 modules@0.10.0
@@ -127,7 +138,10 @@ mongo-dev-server@1.0.1
 mongo-id@1.0.6
 mongo-livedata@1.0.12
 mrt:later@1.6.1
+<<<<<<< HEAD
 nimble:restivus@0.8.12
+=======
+>>>>>>> initial-commit
 npm-bcrypt@0.9.3
 npm-mongo@2.2.30
 oauth@1.1.13
