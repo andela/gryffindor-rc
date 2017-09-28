@@ -91,16 +91,23 @@ Template.searchModal.onCreated(function () {
   // Sort By Price Range
   const sort = (products, type) => {
     return products.sort((a, b) => {
-      const productA = a.price === null ? -1 : a.price.min;
-      const productB = b.price === null ? -1 : a.price.min;
-      if (productA < productB) {
+      const A = a.price === null ? -1 : a.price.min;
+      const B = b.price === null ? -1 : b.price.min;
+      if (A < B) {
         return type === "DESC" ? 1 : -1;
-      } else if (productA > productB) {
+      } else if (A > B) {
         return type === "ASC" ? 1 : -1;
       }
       return 0;
     });
   };
+
+  // Filter products by brand
+  function brandFilter(products, query) {
+    return _.filter(products, (product) => {
+      return product.vendor === query;
+    });
+  }
 
   this.autorun(() => {
     const searchCollection = this.state.get("searchCollection") || "products";
@@ -230,7 +237,8 @@ Template.searchModal.helpers({
   },
   hasResults() {
     const instance = Template.instance();
-    return instance.state.get("productSearchResults").length > 0;
+    const sortResults = instance.state.get("productSearchResults").length;
+    return sortResults > 0;
   }
 });
 
