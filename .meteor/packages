@@ -94,8 +94,8 @@ practicalmeteor:sinon
 
 
 # Custom Packages
-standard-minifier-js@2.1.2
 facebook-config-ui
 google-config-ui
 twitter-config-ui
 dynamic-import
+abernix:standard-minifier-js@2.0.4
