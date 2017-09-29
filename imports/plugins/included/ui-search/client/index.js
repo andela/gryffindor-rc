@@ -6,7 +6,6 @@ import "./templates/searchModal/searchInput.js";
 import "./templates/searchModal/searchTypeToggle.html";
 import "./templates/searchModal/searchTypeToggle.js";
 import "./templates/searchModal/searchResults.html";
-import "./templates/searchModal/inputSearch.js";
 
 // Product Search
 import "./templates/productSearch/productResults.html";
@@ -20,6 +19,10 @@ import "./templates/productSearch/content.js";
 // Order Search
 import "./templates/orderSearch/orderResults.html";
 import "./templates/orderSearch/orderResults.js";
+
+// Sort and Filter Search
+import "./templates/searchModal/searchFilter.html";
+import "./templates/searchModal/searchFilter.js";
 
 // Account Search
 import "./templates/accountSearch/accountResults.html";

@@ -3,6 +3,13 @@ login_email_fld: "[class='form-control login-input-email']"
 login_pw_fld: "[class='form-control login-input-password']"
 login_btn: "[data-event-action='submitSignInForm']"
 
+#search
+search_icon: "div.search"
+search_input: "input#search-input"
+clear_search_term: "[data-event-action='clearSearch']"
+close_search_modal: "div.search-modal-close"
+
+
 #account profile
 pl_email_address_fld: "//div[2]/div/div/div/form/div/input"
 pl_password_fld: "//div[2]/div/div/div/form/div[2]/input"
@@ -92,3 +99,23 @@ stripe_complete_order_btn: "//form[@id='stripe-payment-form']/button"
 
 # order confirmation page
 thank_you_txt: "h3 > span"
+account_dropdown: "#accounts"
+dashboard_dropdown: "#dropdown-apps-dashboard"
+manage_static_page: "(//h3[@class='title'])[5]"
+created_page: "(//a[@id='About-Page'])"
+delete_page: "[class='btn btn-default deletePage']"
+confirm_delete: "[class='swal2-confirm swal2-styled']"
+home_page: "[class='brand']"
+pay_with_wallet: "(//input[@id='pay-with-wallet'])"
+click_wallet: "(//a[@id='wallet'])"
+dashboard: "[class='rui font-icon icon-reaction-logo']"
+manage_orders: "(//h3[@class='title'])[2]"
+new_orders: "(//a[@class='flex'])"
+cancel_order: "(//button[@class='btn btn-success'])"
+select_cancel_option: "(//select[@id='dropDown-comment'])"
+select_others: "(//option[@value='Others'])"
+cancel_order_btn: "(//button[@id='cancelOrder'])"
+confirm_cancel_order: "(//button[@class='swal2-confirm swal2-styled'])"
+show_cancelled_orders: "(//a[@aria-controls='canceled'])"
+close_dashboard: "[data-event-action='closeSettings']"
+availbale_pages: "#logged-in-display-name"

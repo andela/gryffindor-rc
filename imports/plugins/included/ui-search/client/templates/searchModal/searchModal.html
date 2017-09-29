@@ -8,14 +8,21 @@
 
       {{> searchInput }}
 
+      {{> searchFilter productSearchResults=productSearchResults}}
+
       {{> searchTypeToggle }}
 
-      {{> productSearchTags tagSearchResults=tagSearchResults }}
-
+      <div id="toggleTags" class="rui tag-visible">
+        {{> productSearchTags tagSearchResults=tagSearchResults }}
+      </div>
     </div>
 
-    {{> searchResults productSearchResults=productSearchResults orderSearchResults=orderSearchResults accountSearchResults=accountSearchResults orderTable=orderTable accountTable=accountTable }}
+    {{#if hasResults }}
 
+    {{> searchResults productSearchResults=productSearchResults orderSearchResults=orderSearchResults accountSearchResults=accountSearchResults
+    orderTable=orderTable accountTable=accountTable }}
+
+    {{/if}}
   </div>
 
 </template>

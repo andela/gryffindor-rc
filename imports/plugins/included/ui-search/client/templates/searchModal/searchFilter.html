@@ -1,0 +1,57 @@
+<template name="searchFilter">
+  <div class="hidden" id="searchFilter">
+    <div class="container searchContainer">
+      <div class="row">
+        <div class="col-md-4">
+          <label class="transform">Price</label>
+          <div class="rui select">
+            <select id="filter-by-price">
+            <option value="null" disabled selected>Filter by price</option>
+            <option value="all">All Price</option>
+            <option id="firstPrice" value="0 - 100">Below $100 </option>
+            <option value="100 - 200">$100 - $200</option>
+            <option value="200 - 300">$200 - $300 </option>
+            <option value="300 - 500">$300 - $500 </option>
+            <option value="500 - 1000">$500 - $1000 </option>
+            <option value="1000 - 100000">Above $100000 </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="transform">Vendor</label>
+          <div class="rui select">
+            <select id="filter-by-brand">
+                  <option value="null" selected disabled>Filter by vendor</option>
+                  <option value="all">All vendors</option>
+                  {{#each brand in getBrands productSearchResults }}
+                  <option value="{{brand}}">{{brand}}</option>
+                  {{/each}}
+                </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="transform">Latest</label>
+          <div class="rui select">
+            <select id="filter-by-latest">
+              <option value="null" selected disabled>Filter by Latest</option>
+              <option value="new">Old</option>
+              <option id="old" value="old">New</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>
+<template name="sortByRange">
+  <div class="sorts" id="sortByRange">
+      <strong style="color: #3F2222">Sort Product By:&nbsp;</strong>
+      <select id="sort-value">
+          <option value="null"><strong>Price Range</strong></option>
+          <option value="ASC"><strong>Lowest price</strong></option>
+          <option value="DESC"><strong>Highest price</strong></option>
+      </select>
+  </div>
+</template>
+
