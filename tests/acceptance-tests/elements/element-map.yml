@@ -3,6 +3,13 @@ login_email_fld: "[class='form-control login-input-email']"
 login_pw_fld: "[class='form-control login-input-password']"
 login_btn: "[data-event-action='submitSignInForm']"
 
+#search
+search_icon: "div.search"
+search_input: "input#search-input"
+clear_search_term: "[data-event-action='clearSearch']"
+close_search_modal: "div.search-modal-close"
+
+
 #account profile
 pl_email_address_fld: "//div[2]/div/div/div/form/div/input"
 pl_password_fld: "//div[2]/div/div/div/form/div[2]/input"
