@@ -176,6 +176,51 @@ Meteor.methods({
       }
     });
   },
+  	  /**
+   * orders/cancelOrder
+   *
+   * @summary Cancel an Order
+   * @param {Object} order - order object
+   * @return {Object} return update result
+   */
+  "orders/cancelOrder"(order) {
+    check(order, Object);
+    return Orders.update(order._id, {
+      $set: {
+        "workflow.status": "canceled"
+      },
+      $addToSet: {
+        "workflow.workflow": "coreOrderWorkflow/canceled"
+      }
+    });
+  },
+  /**
+   * orders/vendorCancelOrder
+   *
+   * @summary Cancel an Order
+   * @param {Object} order - order object
+   * @param {Object} newComment - new comment object
+   * @return {Object} return update result
+   */
+  "orders/vendorCancelOrder"(order, newComment) {
+    check(order, Object);
+    check(newComment, Object);
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    // TODO: Refund order
+    return Orders.update(order._id, {
+      $set: {
+        "workflow.status": "canceled"
+      },
+      $push: {
+        comments: newComment
+      },
+      $addToSet: {
+        "workflow.workflow": "coreOrderWorkflow/canceled"
+      }
+    });
+  },
 
   /**
    * orders/processPayment
@@ -324,6 +369,35 @@ Meteor.methods({
    */
   "orders/sendNotification": function (order) {
     check(order, Object);
+
+/**
+   * orders/sendSmsNotifications
+   *
+   * @summary send order notification sms to users
+   * @param {Object} order - order object
+   * @return {Boolean} sms sent or not
+   */
+    const shoppersPhone = order.billing[0].address.phone;
+    Logger.info("CUSTOMER ORDER DETAILS", order.items);
+    Logger.info("CUSTOMER'S EMAIL", order.email);
+    Logger.info("CUSTOMERS PHONE NUMBER " + shoppersPhone);
+  // let vendorPhones = [];
+    const smsContent = {
+      to: shoppersPhone
+    };
+    Logger.info("smsContent for Customer", smsContent);
+    const message = {
+      "new": "Your Order has been successfully received and is been processed. Thanks.",
+      "coreOrderWorkflow/processing": "Your orders is on the way and will soon be delivered",
+      "coreOrderWorkflow/completed": "Your orders has been shipped, thanks.",
+      "coreorderWorkflow/canceled": "Your order was cancelled",
+      "success": "SMS SENT"
+    };
+    Logger.info("smsContent for Customer", smsContent);
+    smsContent.message = message[order.workflow.status];
+    Meteor.call("send/smsAlert", smsContent, (error) => {
+      Meteor.call("orders/response/error", error, message.success);
+    });
 
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
