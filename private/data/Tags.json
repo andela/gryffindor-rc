@@ -1,25 +1,18 @@
-[{
-  "slug": "example-product",
-  "name": "example-product",
-  "isTopLevel": false,
-  "updatedAt": {
-    "$date": "2014-04-12T08:17:20.576-0700"
-  },
-  "createdAt": {
-    "$date": "2014-04-12T08:17:20.576-0700"
-  },
-  "_id": "cseCBSSrJ3t8HQSNP",
-  "shopId": "J8Bhq3uTtdgwZx3rz"
-}, {
-  "slug": "shop",
-  "name": "Shop",
-  "isTopLevel": true,
-  "updatedAt": {
-    "$date": "2014-04-09T13:23:57.412-0700"
-  },
-  "createdAt": {
-    "$date": "2014-04-09T13:23:57.412-0700"
-  },
-  "_id": "rpjCvTBGjhBi2xdro",
-  "shopId": "J8Bhq3uTtdgwZx3rz"
-}]
+{"_id":"cseCBSSrJ3t8HQSNP","name":"example-product","slug":"example-product","isTopLevel":false,"updatedAt":{"$date":"2014-04-12T15:17:20.576Z"},"createdAt":{"$date":"2014-04-12T15:17:20.576Z"},"shopId":"J8Bhq3uTtdgwZx3rz","isDeleted":false}
+{"_id":"rpjCvTBGjhBi2xdro","name":"Shop","slug":"shop","isTopLevel":true,"updatedAt":{"$date":"2014-04-09T20:23:57.412Z"},"createdAt":{"$date":"2014-04-09T20:23:57.412Z"},"shopId":"J8Bhq3uTtdgwZx3rz","isDeleted":false}
+{"_id":"ub6DLeQMxRgsuo5kR","name":"game","slug":"game","isTopLevel":true,"updatedAt":{"$date":"2017-09-26T10:03:28.320Z"},"createdAt":{"$date":"2017-09-26T10:03:28.336Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"upStznAPJcMMwiESS","name":"puzzle","slug":"puzzle","isTopLevel":false,"updatedAt":{"$date":"2017-09-26T10:03:32.937Z"},"createdAt":{"$date":"2017-09-26T10:03:32.950Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"sFfQsXAt8e5Wb2Xkr","name":"rubik's","slug":"rubik-s","isTopLevel":false,"updatedAt":{"$date":"2017-09-26T10:03:40.947Z"},"createdAt":{"$date":"2017-09-26T10:03:40.958Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"BtNCeoNpeHJ9QLZsW","name":"rubik's cube","slug":"rubik-s-cube","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T05:16:42.499Z"},"createdAt":{"$date":"2017-09-27T05:16:42.511Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"XhkwHdiLpkQbcWDdH","name":"cards","slug":"cards","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T05:29:55.835Z"},"createdAt":{"$date":"2017-09-27T05:29:55.850Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"inqSFtktPgWQraRA3","name":"board","slug":"board","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T05:39:27.900Z"},"createdAt":{"$date":"2017-09-27T05:39:27.910Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"hneHPj7rvhLhmJ6L9","name":"chess","slug":"chess","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T05:39:32.230Z"},"createdAt":{"$date":"2017-09-27T05:39:32.238Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"WHv8cvrgiQkwY5ZPw","name":"phone","slug":"phone","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T08:41:34.839Z"},"createdAt":{"$date":"2017-09-27T08:41:34.845Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"NtzoehvcBK4ucDjFq","name":"3G","slug":"3g","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T08:41:49.996Z"},"createdAt":{"$date":"2017-09-27T08:41:50.008Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"7D5Jpc46wZo5tt3Pt","name":"4G","slug":"4g","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T08:41:54.871Z"},"createdAt":{"$date":"2017-09-27T08:41:54.880Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"ZRtgeLc8WkdLaPFcC","name":"Samsung","slug":"samsung","isTopLevel":false,"updatedAt":{"$date":"2017-09-27T08:41:59.728Z"},"createdAt":{"$date":"2017-09-27T08:41:59.736Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"AHHz5CvRpJMct9CYz","name":"Sneakers","slug":"sneakers","isTopLevel":false,"updatedAt":{"$date":"2017-10-03T12:08:17.841Z"},"createdAt":{"$date":"2017-10-03T12:08:17.857Z"},"isDeleted":true,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"4LgE3pjM2gphvLuSe","name":"Casual","slug":"casual","isTopLevel":false,"updatedAt":{"$date":"2017-10-03T12:08:45.040Z"},"createdAt":{"$date":"2017-10-03T12:08:45.059Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"8PEL86SrhLkDdTwdG","name":"Shoe","slug":"shoe","isTopLevel":false,"updatedAt":{"$date":"2017-10-03T12:08:49.331Z"},"createdAt":{"$date":"2017-10-03T12:08:49.346Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"b5Z6TfhitxWrSKbzG","name":"Head phone","slug":"head-phone","isTopLevel":false,"updatedAt":{"$date":"2017-10-03T12:25:19.229Z"},"createdAt":{"$date":"2017-10-03T12:25:19.238Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
+{"_id":"5bLNr2ovHtjRML5M3","name":"Music","slug":"music","isTopLevel":false,"updatedAt":{"$date":"2017-10-03T12:25:34.303Z"},"createdAt":{"$date":"2017-10-03T12:25:34.311Z"},"isDeleted":false,"shopId":"J8Bhq3uTtdgwZx3rz"}
