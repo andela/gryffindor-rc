@@ -2,7 +2,7 @@ import { Template } from "meteor/templating";
 import { ProductSearch } from "/lib/collections";
 
 Template.searchInput.helpers({
-  settings: function () {
+  settings() {
     return {
       position: "bottom",
       limit: 1,
@@ -17,5 +17,8 @@ Template.searchInput.helpers({
         }
       ]
     };
+  },
+  productsTab() {
+    return Session.get("currentTab") === "products";
   }
 });
