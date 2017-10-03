@@ -2,6 +2,16 @@
   <div class="grid-content">
     <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
       <div class="overlay">
+        {{#each ratings 4}}
+              <span>
+                <i class="fa fa-star" aria-hidden="true"></i>
+              </span>
+            {{/each}}
+            {{#each ratings 1}}
+              <span>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+              </span>
+            {{/each}}
         <div class="overlay-title">{{title}}</div>
         <div class="currency-symbol">{{formatPrice displayPrice}}</div>
       </div>
