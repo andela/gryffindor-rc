@@ -59,20 +59,6 @@ Template.searchModal.onCreated(function () {
       }
     });
   };
-  // Sort products by price
-  const sort = (products, type) => {
-    return products.sort((a, b) => {
-      const A = a.price === null ? -1 : a.price.min;
-      const B = b.price === null ? -1 : b.price.min;
-      if (A < B) {
-        return type === "DESC" ? 1 : -1;
-      } else if (A > B) {
-        return type === "ASC" ? 1 : -1;
-      }
-      return 0;
-    });
-  };
-
   // Filter products by brand
   function brandFilter(products, query) {
     return _.filter(products, (product) => {
