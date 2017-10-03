@@ -66,20 +66,6 @@ Template.searchModal.onCreated(function () {
     });
   }
 
-  // Sort By Price Range
-  const sort = (products, type) => {
-    return products.sort((a, b) => {
-      const productA = a.price === null ? -1 : a.price.min;
-      const productB = b.price === null ? -1 : a.price.min;
-      if (productA < productB) {
-        return type === "DESC" ? 1 : -1;
-      } else if (productA > productB) {
-        return type === "ASC" ? 1 : -1;
-      }
-      return 0;
-    });
-  };
-
   this.autorun(() => {
     const searchCollection = this.state.get("searchCollection") || "products";
     const searchQuery = this.state.get("searchQuery");
