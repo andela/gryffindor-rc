@@ -9,10 +9,7 @@ Template.gridContent.helpers({
     }
   },
   ratings: function (rating) {
-    const countArr = [];
-    for (let i = 0; i < rating; ++i) {
-      countArr.push({});
-    }
+    const countArr = Array(rating).fill({});
     return countArr;
   }
 });
