@@ -122,9 +122,9 @@ const adminTour = [
   },
   {
     element: ".accounts",
-    intro: `<h3>Account Options</h>
+    intro: `<h2>Account Options</h2>
     <hr>
-    <div class="tourcontainer">Manage your account here<br>
+    <div class="tourcontainer">Manage your account here.<br>
     You can perform tasks such as editing your profile, processing orders made by customers and managing user accounts.
     </div>`
   },
@@ -142,7 +142,7 @@ const adminTour = [
     intro: `<h2>Tour</h2>
     <hr>
     <div class="tourcontainer">
-      That's It! Need to take the tour again? you can always find me here.
+      That's It! Need to take the tour again? You can always find me here.
     </div>`
   }
 ];
