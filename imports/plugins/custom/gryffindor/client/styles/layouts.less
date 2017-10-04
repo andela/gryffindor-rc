@@ -1,0 +1,86 @@
+@import "{}/imports/plugins/included/default-theme/client/styles/main.less";
+
+@mature-blue: #3e7293;
+@mature-orange: #da9720;
+@navbar-default-bg: @mature-blue;
+@cart-icon-bg: @mature-blue;
+@black40: @mature-blue;
+@black60: @mature-blue;
+
+
+.btn-block {
+  background-color: @mature-blue;
+}
+
+.btn-block:hover {
+  background-color: @mature-orange;
+}
+
+.cart-icon {
+  padding: 14px 30px 10px 10px;
+}
+
+.container-main {
+  padding-left: 25px;
+}
+
+.fa-star {
+  color: @mature-orange;
+}
+
+.footer-default {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  background-color: @mature-blue;
+  padding-left: 25px;
+  color: white;
+}
+
+.product-grid-item {
+  .product-grid-item-images {
+    height: 250px;
+  }
+  .overlay-title {
+    text-align: left;
+  }
+  .overlay {
+    .currency-symbol {
+      text-align: left;
+      font-size: 10px;
+    }
+  }
+}
+
+.static-links {
+  float: left;
+}
+
+.social-media {
+  float: right;
+  font-size: 15px;
+  padding-right: 45px;
+  span {
+    margin-right: 15px; 
+    &:hover {
+      color: @mature-orange;
+    }
+  }
+}
+
+.static-links a {
+  color: white;
+  font-size: 12px;
+  &:hover {
+    color: @mature-orange;
+  }
+}
+
+.rui.navbar .dropdown .dropdown-menu > .active > a {
+  background-color: @mature-blue;
+}
+
+.rui.navbar {
+  padding-left: 25px;
+}
