@@ -4,7 +4,7 @@ import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 import { i18next } from "/client/api";
-import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, Tags, OrderSearch, AccountSearch} from "/lib/collections";
 import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 /*
@@ -44,28 +44,7 @@ Template.searchModal.onCreated(function () {
     }
   });
 
-  // Filter products by price
-  const priceFilter = (products, query) => {
-    return _.filter(products, (product) => {
-      if (product.price) {
-        const productMaxPrice = parseFloat(product.price.max);
-        const productMinPrice = parseFloat(product.price.min);
-        const queryMaxPrice = parseFloat(query[1]);
-        const queryMinPrice = parseFloat(query[0]);
-        if (productMinPrice >= queryMinPrice && productMaxPrice <= queryMaxPrice) {
-          return product;
-        }
-        return false;
-      }
-    });
-  };
-  // Filter products by brand
-  function brandFilter(products, query) {
-    return _.filter(products, (product) => {
-      return product.vendor === query;
-    });
-  }
-
+    // Sort products by price
   const sort = (products, type) => {
     return products.sort((a, b) => {
       const A = a.price === null ? -1 : a.price.min;
@@ -78,13 +57,47 @@ Template.searchModal.onCreated(function () {
       return 0;
     });
   };
-  
+
+ // filter product by price
+  const filterProductByPrice = (products, query) => {
+    return _.filter(products, (product) => {
+      if (product.price) {
+        const maxPrice = parseFloat(product.price.max);
+        const minPrice = parseFloat(product.price.min);
+        const queryMaxPrice = parseFloat(query[1]);
+        const queryMinPrice = parseFloat(query[0]);
+        if (minPrice >= queryMinPrice && maxPrice <= queryMaxPrice) {
+          return product;
+        }
+        return false;
+      }
+    });
+  };
+
+  // filter product by manufactures
+  const filterProductByManufaturer = (products, manufacturers) => {
+    return _.filter(products, (product) => {
+      return product.vendor === manufacturers;
+    });
+  };
+
+  // filter product by latest
+  const filterProductByLatest = (products, latestQuery) => {
+    if (latestQuery === "new") {
+      return products;
+    } else if (latestQuery === "old") {
+      return products.reverse();
+    }
+    return products;
+  };
+
   this.autorun(() => {
     const searchCollection = this.state.get("searchCollection") || "products";
     const searchQuery = this.state.get("searchQuery");
-    const priceQuery = Session.get("priceFilter");
-    const brandQuery = Session.get("brandFilter");
-    const sortQuery = Session.get("sortValue");
+    const priceQuery = Session.get("filterPrice");
+    const brandQuery = Session.get("filterBrand");
+    const productSortQuery = Session.get("sortValue");
+    const latestQuery = Session.get("filterLatest");
     const facets = this.state.get("facets") || [];
     const sub = this.subscribe("SearchResults", searchCollection, searchQuery, facets);
 
@@ -94,16 +107,22 @@ Template.searchModal.onCreated(function () {
        */
       if (searchCollection === "products") {
         let productResults = ProductSearch.find().fetch();
-
+        // filter product by price if the filter array is not null or all
         if (!["null", "all"].includes(priceQuery) && priceQuery) {
           const range = priceQuery.split("-");
-          productResults = priceFilter(productResults, range);
+          productResults = filterProductByPrice(productResults, range);
         }
+        // filter product by manufacturer if the filter array is not null or all
         if (!["null", "all"].includes(brandQuery) && brandQuery) {
-          productResults = brandFilter(productResults, brandQuery);
+          productResults = filterProductByManufaturer(productResults, brandQuery);
         }
-        if (sortQuery !== "null" && sortQuery) {
-          productResults = sort(productResults, sortQuery);
+        // filter product by new and old when all is not selected
+        if (!["null", "all"].includes(latestQuery) && latestQuery) {
+          productResults = filterProductByLatest(productResults, latestQuery);
+        }
+        // sort product query
+        if (productSortQuery !== "null" && productSortQuery) {
+          productResults = sort(productResults, productSortQuery);
         }
 
         const productResultsCount = productResults.length;
