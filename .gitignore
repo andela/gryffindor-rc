@@ -40,3 +40,5 @@ imports/plugins/custom/*
 !imports/plugins/custom/gryffindor
 
 .reaction/config.json
+
+!imports/plugins/custom/tour
