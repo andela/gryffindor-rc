@@ -37,5 +37,6 @@ private/custom/*
 
 imports/plugins/custom/*
 !imports/plugins/custom/.gitkeep
+!imports/plugins/custom/gryffindor
 
 .reaction/config.json
