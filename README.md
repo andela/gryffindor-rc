@@ -1,6 +1,8 @@
 # Reaction
 
+![hound status](https://img.shields.io/badge/Protected%20by-Hound-green.svg)
 [![Coverage Status](https://coveralls.io/repos/github/andela/gryffindor-rc/badge.svg)](https://coveralls.io/github/andela/gryffindor-rc)
+[![CircleCI](https://circleci.com/gh/andela/gryffindor-rc.svg?style=svg)](https://circleci.com/gh/andela/gryffindor-rc)
 [![CircleCI](https://circleci.com/gh/andela/gryffindor-rc/tree/chores%2FCircle-CI-integration.svg?style=svg)](https://circleci.com/gh/andela/gryffindor-rc/tree/chores%2FCircle-CI-integration)
 
 Reaction is a modern reactive, real-time event driven ecommerce platform.

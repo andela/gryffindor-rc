@@ -1,0 +1,1 @@
+Template.gryLayoutFooter.replaces("layoutFooter");
