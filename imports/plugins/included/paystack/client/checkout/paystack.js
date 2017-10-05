@@ -52,7 +52,6 @@ AutoForm.addHooks("paystack-payment-form", {
       const cart = Cart.findOne();
       const amount = Math.round(cart.cartTotal()) * 100;
       const key = keys.public;
-          console.log('response is gotten', keys);
       const details = {
         key,
         name: doc.payerName,
