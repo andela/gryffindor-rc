@@ -43,6 +43,21 @@ Template.searchModal.onCreated(function () {
       });
     }
   });
+ // filter product by price
+  const filterProductByPrice = (products, query) => {
+    return _.filter(products, (product) => {
+      if (product.price) {
+        const maxPrice = parseFloat(product.price.max);
+        const minPrice = parseFloat(product.price.min);
+        const queryMaxPrice = parseFloat(query[1]);
+        const queryMinPrice = parseFloat(query[0]);
+        if (minPrice >= queryMinPrice && maxPrice <= queryMaxPrice) {
+          return true;
+        }
+        return false;
+      }
+    });
+  };
 
     // Sort products by price
   const sort = (products, type) => {
@@ -58,34 +73,16 @@ Template.searchModal.onCreated(function () {
     });
   };
 
- // filter product by price
-  const filterProductByPrice = (products, query) => {
-    return _.filter(products, (product) => {
-      if (product.price) {
-        const maxPrice = parseFloat(product.price.max);
-        const minPrice = parseFloat(product.price.min);
-        const queryMaxPrice = parseFloat(query[1]);
-        const queryMinPrice = parseFloat(query[0]);
-        if (minPrice >= queryMinPrice && maxPrice <= queryMaxPrice) {
-          return product;
-        }
-        return false;
-      }
-    });
-  };
-
   // filter product by manufactures
   const filterProductByManufaturer = (products, manufacturers) => {
-    return _.filter(products, (product) => {
+    _.filter(products, (product) => {
       return product.vendor === manufacturers;
     });
   };
 
   // filter product by latest
   const filterProductByLatest = (products, latestQuery) => {
-    if (latestQuery === "new") {
-      return products;
-    } else if (latestQuery === "old") {
+    if (latestQuery === "old") {
       return products.reverse();
     }
     return products;
@@ -108,7 +105,7 @@ Template.searchModal.onCreated(function () {
       if (searchCollection === "products") {
         let productResults = ProductSearch.find().fetch();
         // filter product by price if the filter array is not null or all
-        if (!["null", "all"].includes(priceQuery) && priceQuery) {
+        if (priceQuery && !["null", "all"].includes(priceQuery)) {
           const range = priceQuery.split("-");
           productResults = filterProductByPrice(productResults, range);
         }
@@ -219,8 +216,7 @@ Template.searchModal.helpers({
   },
   hasResults() {
     const instance = Template.instance();
-    const sortResults = instance.state.get("productSearchResults").length;
-    return sortResults > 0;
+    return instance.state.get("productSearchResults").length > 0;
   }
 });
 
