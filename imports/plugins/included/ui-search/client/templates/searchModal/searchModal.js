@@ -216,8 +216,7 @@ Template.searchModal.helpers({
   },
   hasResults() {
     const instance = Template.instance();
-    const sortResults = instance.state.get("productSearchResults").length;
-    return sortResults > 0;
+    return instance.state.get("productSearchResults").length > 0;
   }
 });
 
