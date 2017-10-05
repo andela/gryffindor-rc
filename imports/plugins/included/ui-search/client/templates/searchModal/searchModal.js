@@ -2,8 +2,9 @@ import _ from "lodash";
 import React from "react";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
+import { Session } from "meteor/session";
 import { i18next } from "/client/api";
-import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, Tags, OrderSearch, AccountSearch} from "/lib/collections";
 import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 /*
@@ -42,11 +43,58 @@ Template.searchModal.onCreated(function () {
       });
     }
   });
+ // filter product by price
+  const filterProductByPrice = (products, query) => {
+    return _.filter(products, (product) => {
+      if (product.price) {
+        const maxPrice = parseFloat(product.price.max);
+        const minPrice = parseFloat(product.price.min);
+        const queryMaxPrice = parseFloat(query[1]);
+        const queryMinPrice = parseFloat(query[0]);
+        if (minPrice >= queryMinPrice && maxPrice <= queryMaxPrice) {
+          return true;
+        }
+        return false;
+      }
+    });
+  };
 
+    // Sort products by price
+  const sort = (products, type) => {
+    return products.sort((a, b) => {
+      const A = a.price === null ? -1 : a.price.min;
+      const B = b.price === null ? -1 : b.price.min;
+      if (A < B) {
+        return type === "DESC" ? 1 : -1;
+      } else if (A > B) {
+        return type === "ASC" ? 1 : -1;
+      }
+      return 0;
+    });
+  };
+
+  // filter product by manufactures
+  const filterProductByManufaturer = (products, manufacturers) => {
+    _.filter(products, (product) => {
+      return product.vendor === manufacturers;
+    });
+  };
+
+  // filter product by latest
+  const filterProductByLatest = (products, latestQuery) => {
+    if (latestQuery === "old") {
+      return products.reverse();
+    }
+    return products;
+  };
 
   this.autorun(() => {
     const searchCollection = this.state.get("searchCollection") || "products";
     const searchQuery = this.state.get("searchQuery");
+    const priceQuery = Session.get("filterPrice");
+    const brandQuery = Session.get("filterBrand");
+    const productSortQuery = Session.get("sortValue");
+    const latestQuery = Session.get("filterLatest");
     const facets = this.state.get("facets") || [];
     const sub = this.subscribe("SearchResults", searchCollection, searchQuery, facets);
 
@@ -55,7 +103,25 @@ Template.searchModal.onCreated(function () {
        * Product Search
        */
       if (searchCollection === "products") {
-        const productResults = ProductSearch.find().fetch();
+        let productResults = ProductSearch.find().fetch();
+        // filter product by price if the filter array is not null or all
+        if (priceQuery && !["null", "all"].includes(priceQuery)) {
+          const range = priceQuery.split("-");
+          productResults = filterProductByPrice(productResults, range);
+        }
+        // filter product by manufacturer if the filter array is not null or all
+        if (!["null", "all"].includes(brandQuery) && brandQuery) {
+          productResults = filterProductByManufaturer(productResults, brandQuery);
+        }
+        // filter product by new and old when all is not selected
+        if (!["null", "all"].includes(latestQuery) && latestQuery) {
+          productResults = filterProductByLatest(productResults, latestQuery);
+        }
+        // sort product query
+        if (productSortQuery !== "null" && productSortQuery) {
+          productResults = sort(productResults, productSortQuery);
+        }
+
         const productResultsCount = productResults.length;
         this.state.set("productSearchResults", productResults);
         this.state.set("productSearchCount", productResultsCount);
@@ -147,6 +213,10 @@ Template.searchModal.helpers({
   },
   showSearchResults() {
     return false;
+  },
+  hasResults() {
+    const instance = Template.instance();
+    return instance.state.get("productSearchResults").length > 0;
   }
 });
 
@@ -184,6 +254,11 @@ Template.searchModal.events({
       Blaze.remove(view);
     });
   },
+  "click [data-event-action=filterClick]": function () {
+    // alert("conclude");
+    $("#searchFilter").toggleClass("hidden");
+    $("#toggleTags").toggleClass("hidden");
+  },
   "click [data-event-action=clearSearch]": function (event, templateInstance) {
     $("#search-input").val("");
     $("#search-input").focus();
@@ -202,7 +277,6 @@ Template.searchModal.events({
     templateInstance.state.set("searchCollection", searchCollection);
   }
 });
-
 
 /*
  * searchModal onDestroyed
