@@ -20,6 +20,10 @@ import "./templates/productSearch/content.js";
 import "./templates/orderSearch/orderResults.html";
 import "./templates/orderSearch/orderResults.js";
 
+// Sort and Filter Search
+import "./templates/searchModal/searchFilter.html";
+import "./templates/searchModal/searchFilter.js";
+
 // Account Search
 import "./templates/accountSearch/accountResults.html";
 import "./templates/accountSearch/accountResults.js";
