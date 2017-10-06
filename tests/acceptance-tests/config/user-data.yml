@@ -1,10 +1,9 @@
-admin_user: Admin
-admin_email: glvmomcw@localhost
-admin_pw: 5xPits9m
+admin_user: Administrator
+admin_email: testing@reactioncommerce.com
+admin_pw: password123
 
-guest_email: wesumeh@gmail.com
-guest_pw: derico
-guest_user: Guest
+guest_email: "guest@reactioncommerce.com"
+guest_pw: password123
 
 # shop address
 country: US

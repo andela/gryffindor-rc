@@ -5,10 +5,7 @@ import { NumericInput } from "/imports/plugins/core/ui/client/components";
 Template.ordersListSummary.onCreated(function () {
   this.state = new ReactiveDict();
   this.autorun(() => {
-    const currentData = Template.currentData();
-    const order = currentData.order;
-
-    this.state.set("order", order);
+    this.state.set("order", Template.currentData().order);
   });
 });
 
@@ -50,8 +47,7 @@ Template.ordersListSummary.events({
   "click button[name=cancel]"(event, instance) {
     event.stopPropagation();
 
-    const state = instance.state;
-    const order = state.get("order");
+    const order = instance.state.get("order");
     Alerts.alert({
       title: "Are you sure you want to cancel this order.",
       showCancelButton: true,
