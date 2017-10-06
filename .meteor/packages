@@ -100,3 +100,4 @@ twitter-config-ui
 dynamic-import
 abernix:standard-minifier-js@2.0.4
 mizzao:autocomplete
+nimble:restivus
