@@ -81,14 +81,12 @@ Meteor.methods({
    */
   "orders/shipmentTracking": function (order, tracking) {
     //Meteor.call("order/sendText", "orderSendMail");
-    console.log('2')
   },
 
   // shipmentPrepare
   "orders/documentPrepare": (order) => {
     check(order, Object);
     this.unblock();
-    console.log('3')
 
     if (order) {
       return Meteor.call("workflow/pushOrderWorkflow",
@@ -581,9 +579,8 @@ Meteor.methods({
       email: order.email
     };
     
-    //Meteor.call('orders/sendText', textPayload);
-    //Meteor.call('orders/sendMail', mailPayload);
-    console.log(textPayload)
+    Meteor.call('orders/sendText', textPayload);
+    Meteor.call('orders/sendMail', mailPayload);
     if (order.workflow.status === "new") {
       Streamy.broadcast('new order', { data: 'There is a new order' });      
     }
@@ -692,7 +689,6 @@ Meteor.methods({
     check(orderId, String);
     check(shipmentId, String);
     check(item, Object);
-    console.log('1')
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
