@@ -27,7 +27,7 @@ Template.coreOrderCancelOrder.onCreated(function () {
   template.formMessages = new ReactiveVar({});
 
   this.autorun(() => {
-    const order = Template.currentData().order;
+    const order = Template.currentData();
 
     if (order.workflow.status === "canceled") {
       template.showCancelOrderForm = ReactiveVar(false);
@@ -83,6 +83,8 @@ Template.coreOrderCancelOrder.events({
       userId: Meteor.userId(),
       updatedAt: new Date
     };
+
+    const order = template.state.get("order");
 
     Alerts.alert({
       title: "Are you sure you want to cancel this order.",

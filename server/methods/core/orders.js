@@ -81,12 +81,14 @@ Meteor.methods({
    */
   "orders/shipmentTracking": function (order, tracking) {
     //Meteor.call("order/sendText", "orderSendMail");
+    console.log('2')
   },
 
   // shipmentPrepare
   "orders/documentPrepare": (order) => {
     check(order, Object);
     this.unblock();
+    console.log('3')
 
     if (order) {
       return Meteor.call("workflow/pushOrderWorkflow",
@@ -111,6 +113,7 @@ Meteor.methods({
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+    Streamy.broadcast("shipped", { data: "Your order has been shipped" });
 
     if (order) {
       Orders.update({
@@ -245,6 +248,7 @@ Meteor.methods({
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+    Streamy.broadcast(" admin cancel order", { data: "Your order has been canceled" });
     // TODO: Refund order
     return Orders.update(order._id, {
       $set: {
@@ -556,7 +560,7 @@ Meteor.methods({
       // subject: `Order update from ${shop.name}`,
       html: SSR.render(tpl, dataForOrderEmail)
     });
-    const message = {
+    const messages = {
           "new": "Hello, your order has been created. Thanks.",
           "coreOrderWorkflow/processing": "Hello, your payment as being aproved. and you good has being shipped. Thanks",
           "coreOrderWorkflow/completed": "Hello, your order has been shipped",
@@ -566,7 +570,7 @@ Meteor.methods({
     const textPayload = {
       to: order.billing[0].address.phone,
       from: "Reaction Commerce",
-      message: message[order.workflow.status]
+      message: messages[order.workflow.status]
     };
     
     const mailPayload = {
@@ -577,10 +581,17 @@ Meteor.methods({
       email: order.email
     };
     
-    Meteor.call('orders/sendText', textPayload);
-    Meteor.call('orders/sendMail', mailPayload);
+    //Meteor.call('orders/sendText', textPayload);
+    //Meteor.call('orders/sendMail', mailPayload);
+    console.log(textPayload)
     if (order.workflow.status === "new") {
       Streamy.broadcast('new order', { data: 'There is a new order' });      
+    }
+    if (order.workflow.status === "coreOrderWorkflow/processing") {
+      Streamy.broadcast('processing order', { data: 'There is a new order' });      
+    }
+    if (order.workflow.status === "coreOrderWorkflow/completed") {
+      Streamy.broadcast('completed order', { data: 'There is a new order' });      
     }
 
     return true;
@@ -681,6 +692,7 @@ Meteor.methods({
     check(orderId, String);
     check(shipmentId, String);
     check(item, Object);
+    console.log('1')
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");

@@ -1,6 +1,7 @@
 import { Template } from "meteor/templating";
 import { Logger } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
+import { Streamy } from "meteor/yuukan:streamy";
 
 Template.ordersListSummary.onCreated(function () {
   this.state = new ReactiveDict();
@@ -46,7 +47,6 @@ Template.ordersListSummary.events({
   */
   "click button[name=cancel]"(event, instance) {
     event.stopPropagation();
-
     const order = instance.state.get("order");
     Alerts.alert({
       title: "Are you sure you want to cancel this order.",
@@ -59,6 +59,11 @@ Template.ordersListSummary.events({
             Logger.warn(error);
           }
         });
+        Streamy.broadcast("cancel order", { data: "A user has cancelled an order" });
+        const timeout = setTimeout(() => {
+          Alerts.toast("You order was sussessfully cancelled", "success");
+          clearTimeout(timeout);
+        }, 3000);
       }
     });
   }

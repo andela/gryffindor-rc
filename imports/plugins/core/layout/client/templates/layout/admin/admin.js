@@ -74,7 +74,16 @@ Template.coreAdminLayout.helpers({
       return true;
     }
     Streamy.on("new order", (d, s) => {
-      Alerts.toast("A new Order has being placed", "success");
+      Alerts.toast("A new order has being placed", "success");
+    });
+    Streamy.on("processing order", (d, s) => {
+      Alerts.toast("Your order has been shipped", "success");
+    });
+    Streamy.on("completed order", (d, s) => {
+      Alerts.toast("Your order has been completed", "success");
+    });
+    Streamy.on("cancel order", (d, s) => {
+      Alerts.toast("A user cancelled an order", "success");
     });
     return false;
   },
