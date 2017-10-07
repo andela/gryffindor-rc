@@ -75,7 +75,7 @@ Template.searchModal.onCreated(function () {
 
   // filter product by manufactures
   const filterProductByManufaturer = (products, manufacturers) => {
-    _.filter(products, (product) => {
+    return _.filter(products, (product) => {
       return product.vendor === manufacturers;
     });
   };
@@ -110,7 +110,7 @@ Template.searchModal.onCreated(function () {
           productResults = filterProductByPrice(productResults, range);
         }
         // filter product by manufacturer if the filter array is not null or all
-        if (!["null", "all"].includes(brandQuery) && brandQuery) {
+        if (brandQuery && !["null", "all"].includes(brandQuery)) {
           productResults = filterProductByManufaturer(productResults, brandQuery);
         }
         // filter product by new and old when all is not selected
