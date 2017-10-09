@@ -98,7 +98,6 @@ AutoForm.addHooks("paystack-payment-form", {
         uiEnd(template, "Complete payment");
       }
     });
-    return false;
   },
   beginSubmit: function () {
     this.template.$(":input").attr("disabled", true);

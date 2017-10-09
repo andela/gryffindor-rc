@@ -20,7 +20,7 @@ Template.paystackPaymentSettings.helpers({
 
 
 Template.paystack.helpers({
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "paystack",
       shopId: Reaction.getShopId()
@@ -36,13 +36,13 @@ Template.paystack.events({
 
 AutoForm.hooks({
   "paystack-update-form": {
-    onSuccess: function () {
+    onSuccess() {
       Alerts.removeSeen();
-      return Alerts.add("Paystack Payment Method settings saved.", "success");
+      Alerts.add("Paystack Payment Method settings saved.", "success");
     },
-    onError: function (operation, error) {
+    onError(operation, error) {
       Alerts.removeSeen();
-      return Alerts.add("Paystack Payment Method settings update failed. " + error, "danger");
+      Alerts.add("Paystack Payment Method settings update failed. " + error, "danger");
     }
   }
 });
