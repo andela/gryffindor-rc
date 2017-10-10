@@ -1,7 +1,11 @@
 import moment from "moment";
 import { Template } from "meteor/templating";
+<<<<<<< HEAD
 import { i18next } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
+=======
+import { Orders, Shops} from "/lib/collections";
+>>>>>>> feature/151297885/digital-products
 
 /**
  * dashboardOrdersList helpers
