@@ -86,6 +86,10 @@ module.exports = {
       browser.pause("1000");
     }
   },
+  paystackPaymentInfo() {
+    browser.pause(5000);
+    browser.setValue("input[name='payerEmail']", userData.guest_email);
+  },
   stripePaymentInfo: function () {
     browser.pause(6000);
     browser.setValue(eleMap.stripe_cc, userData.stripe_visa);
