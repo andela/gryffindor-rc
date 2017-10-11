@@ -18,5 +18,7 @@ import "./templates/layout/notFound/notFound.js";
 import "./templates/layout/notice/unauthorized.html";
 import "./templates/layout/layout.html";
 
+import "../../../custom/wallet/client/wallet.html";
+import "../../../custom/wallet/client/wallet.js";
 import "./templates/theme/theme.html";
 import "./templates/theme/theme.js";
