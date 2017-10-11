@@ -6,7 +6,7 @@
      {{#if showCancelOrderForm}}
      <div class="panel-body">
       <form name="cancelOrderForm">
-        <div class="form-group {{hasError messages.errors.comment}}">
+        <div class="form-group {{hasError messages.errors}}">
            <label> Reason for cancelling</label>
            <div>
              <select name="comment" class="cancelReason" id="dropDown-comment">
@@ -20,7 +20,7 @@
              <textarea name="comment" id="input-comment"
                class="form-control input-comment"></textarea>
            {{/if}}
-          {{#if hasError messages.errors.comment}}
+          {{#if hasError messages.errors}}
              <span class="help-block">
               {{messages.errors.comment.reason}}
             </span>
@@ -34,7 +34,7 @@
             data-event-action="cancelOrder" id="cancelOrder">Cancel Order
            </button>
        </div>
-       </form>
+      </form>
     </div>
      {{/if}}
   </div>

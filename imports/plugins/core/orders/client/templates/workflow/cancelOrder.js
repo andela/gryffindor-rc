@@ -5,8 +5,9 @@ const validateComment = (comment) => {
   check(comment, Match.OptionalOrNull(String));
   // Valid
   if (comment.length >= 10) {
-    return true;
-  } else if (comment.length === 0) {
+    return {};
+  }
+  if (comment.length === 0) {
     return { error: "INVALID_COMMENT",
       reason: "Specify a reason for cancelling" };
   }
@@ -26,8 +27,7 @@ Template.coreOrderCancelOrder.onCreated(function () {
   template.formMessages = new ReactiveVar({});
 
   this.autorun(() => {
-    const currentData = Template.currentData();
-    const order = currentData.order;
+    const order = Template.currentData();
 
     if (order.workflow.status === "canceled") {
       template.showCancelOrderForm = ReactiveVar(false);
@@ -66,13 +66,13 @@ Template.coreOrderCancelOrder.events({
 
     templateInstance.formMessages.set({});
 
-    if (validatedComment !== true) {
+    if (! validatedComment) {
       errors.comment = validatedComment;
     }
 
-    if ($.isEmptyObject(errors) === false) {
+    if (!$.isEmptyObject(errors)) {
       templateInstance.formMessages.set({
-        errors: errors
+        errors
       });
       // prevent order cancel
       return;
@@ -84,8 +84,7 @@ Template.coreOrderCancelOrder.events({
       updatedAt: new Date
     };
 
-    const state = template.state;
-    const order = state.get("order");
+    const order = template.state.get("order");
 
     Alerts.alert({
       title: "Are you sure you want to cancel this order.",
@@ -120,12 +119,6 @@ Template.coreOrderCancelOrder.helpers({
   },
 
   hasError(error) {
-    // True here means the field is valid
-    // We're checking if theres some other message to display
-    if (error !== true && typeof error !== "undefined") {
-      return "has-error has-feedback";
-    }
-
-    return false;
+    return error ? "has-error has-feedback" : " ";
   }
 });

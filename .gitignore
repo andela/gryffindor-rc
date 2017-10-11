@@ -12,6 +12,7 @@
 *.sublime-project
 *.sublime-workspace
 .env
+tests/acceptance-tests/test/specs/smoke-tests/notification.app-test.js
 
 jsdoc.json
 lib-cov
