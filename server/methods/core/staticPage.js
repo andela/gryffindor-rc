@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { StaticPages } from "../../../lib/collections";
-import * as Collections from "/lib/collections";
+import * as Collections from "../../../lib/collections/collections";
 import * as Schemas from "../../../lib/collections/schemas";
 
 Meteor.methods({
@@ -73,6 +73,6 @@ Meteor.methods({
    */
   "deletePage"(_id) {
     check(_id, String);
-    StaticPages.remove(_id);
+    Collections.StaticPages.remove(_id);
   }
 });

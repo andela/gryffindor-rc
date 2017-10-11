@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 import SimpleMDE from "simplemde";
 import { Template } from "meteor/templating";
-import { StaticPages } from "/lib/collections";
+import { StaticPages } from "../../../../../../lib/collections/collections";
 import "./staticPageView.html";
 import "/node_modules/simplemde/dist/simplemde.min.css";
-import { Reaction } from "/client/api";
+import { Reaction } from "../../../../../../client/api";
 
 let simplemde;
 Template.staticPages.onRendered(() => {

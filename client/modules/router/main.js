@@ -4,9 +4,9 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
 import { BlazeLayout } from "meteor/kadira:blaze-layout";
-import { Reaction, Logger } from "/client/api";
-import { Packages, Shops } from "/lib/collections";
-import { MetaData } from "/lib/api/router/metadata";
+import { Reaction, Logger } from "../../api";
+import { Packages, Shops } from "../../../lib/collections";
+import { MetaData } from "../../../lib/api/router/metadata";
 import Hooks from "./hooks";
 
 

@@ -1,4 +1,4 @@
-import { StaticPages } from "/lib/collections";
+import { StaticPages } from "../../../lib/collections/collections";
 import { Meteor } from "meteor/meteor";
 
 Meteor.publish("StaticPages", function () {
