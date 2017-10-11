@@ -11,7 +11,7 @@ import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 import nodemailer from "nodemailer";
-import jusibe from "jusibe";
+const Nexmo = require('nexmo');
 
 /**
  * Reaction Order Methods
@@ -66,10 +66,21 @@ Meteor.methods({
    */
   "orders/sendText": function (payload) {
     check(payload, Object);
-    const key = process.env.PUBLIC_KEY;
-    const token = process.env.ACCESS_TOKEN;
-    const Jusibe = new jusibe(key, token);
-    Jusibe.sendSMS(payload);
+    const nexmo = new Nexmo({
+      apiKey: process.env.NEXMO_APIKEY,
+      apiSecret: process.env.NEXMO_APISECRET
+    });
+ 
+    nexmo.message.sendSms(
+      'Reaction', +2349055483634, `${payload.message}. Reaction Commerce`,
+      (error, responseData) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log(responseData);
+        }
+      }
+    );
   },
 
   /**
@@ -247,6 +258,43 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     Streamy.broadcast(" admin cancel order", { data: "Your order has been canceled" });
+
+    const mailHead = `<div><p>Hello,</p>
+                    <p>Your order was canceled. Please find the details below</p>
+                    <strong>
+                    <p>Item Ordered: ${order.items[0].title}</p>
+                    <p style="color: red;">Reason: ${newComment.body}</p>
+                    <p>Thanks for shopping with us!</p>
+                    <p>Gryffindor Reaction Commerce</p>
+                    </strong>
+                    </div>`;
+
+    const mailOptions = {
+      from: '"Reaction Commerce" <wesumeh@gmail.com>',
+      to: order.email,
+      subject: "Canceled Order",
+      html: mailHead
+    };
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    });
+    transporter.sendMail(mailOptions)
+
+    const textPayload = {
+      to: order.billing[0].address.phone,
+      from: "Reaction Commerce",
+      message: `Hi ${order.billing[0].address.fullName}. Your order of ${order.items.length} item(s) of id ${order._id} has been cancelled. Reason: ${newComment.body}. Thanks for shopping with us. `, 
+    };
+
+    Meteor.call("orders/sendText", textPayload);
+
     // TODO: Refund order
     return Orders.update(order._id, {
       $set: {
@@ -559,11 +607,11 @@ Meteor.methods({
       html: SSR.render(tpl, dataForOrderEmail)
     });
     const messages = {
-          "new": "Hello, your order has been created. Thanks.",
-          "coreOrderWorkflow/processing": "Hello, your payment as being aproved. and you good has being shipped. Thanks",
-          "coreOrderWorkflow/completed": "Hello, your order has been shipped",
-          "coreorderWorkflow/canceled": "Sorry, your order was cancelled",
-          "success": "SMS SENT"
+      "new": `Hi ${order.billing[0].address.fullName}. Your order of ${order.items.length} item(s) of ID ${order._id} has been created.`,
+      "coreOrderWorkflow/processing": "Hello, your payment has being aproved. and your order has being shipped. Thanks",
+      "coreOrderWorkflow/completed": "Hello, your order has been shipped",
+      "coreorderWorkflow/canceled": "Sorry, your order was cancelled",
+      "success": "SMS SENT"
        };
     const textPayload = {
       to: order.billing[0].address.phone,
@@ -575,20 +623,21 @@ Meteor.methods({
       to: order.email,
       from: "Reaction Commerce",
       dataForOrderEmail,
-      message: message[order.workflow.status],
+      message: messages[order.workflow.status],
       email: order.email
     };
-    
-    Meteor.call('orders/sendText', textPayload);
-    Meteor.call('orders/sendMail', mailPayload);
+  
+    Meteor.call("orders/sendText", textPayload);
+    Meteor.call("orders/sendMail", mailPayload);
+
     if (order.workflow.status === "new") {
-      Streamy.broadcast('new order', { data: 'There is a new order' });      
+      Streamy.broadcast("new order", { data: "There is a new order" });
     }
     if (order.workflow.status === "coreOrderWorkflow/processing") {
-      Streamy.broadcast('processing order', { data: 'There is a new order' });      
+      Streamy.broadcast("processing order", { data: "There is a new order" });
     }
     if (order.workflow.status === "coreOrderWorkflow/completed") {
-      Streamy.broadcast('completed order', { data: 'There is a new order' });      
+      Streamy.broadcast("completed order", { data: 'There is a new order' });
     }
 
     return true;
