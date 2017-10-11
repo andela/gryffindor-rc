@@ -27,6 +27,12 @@
       "decimal": ",",
       "thousand": "."
     },
+     "NGN": {
+      "format": "%s%v",
+      "symbol": "N",
+      "decimal": ",",
+      "thousand": "."
+    },
     "AOA": {
       "format": "%s%v",
       "symbol": "Kz"
@@ -3091,7 +3097,8 @@
     "tag",
     "index",
     "cart/checkout",
-    "cart/completed"
+    "cart/completed",
+    "wallet"
   ]
 }, {
   "_id": "ddzuN2YPvgvx7rJS5",
