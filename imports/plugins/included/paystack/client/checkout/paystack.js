@@ -45,6 +45,7 @@ Template.paystackPaymentForm.helpers({
 
 AutoForm.addHooks("paystack-payment-form", {
   onSubmit: function (doc) {
+    this.event.preventDefault();
     submitting = true;
     hidePaymentAlert();
     const template = this.template;
@@ -102,7 +103,7 @@ AutoForm.addHooks("paystack-payment-form", {
   beginSubmit: function () {
     this.template.$(":input").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
-    return this.template.$("#btn-processing").removeClass("hidden");
+    this.template.$("#btn-processing").removeClass("hidden");
   },
   endSubmit: function () {
     if (!submitting) {
