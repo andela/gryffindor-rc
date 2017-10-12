@@ -105,4 +105,7 @@ themeteorchef:commonmark
 templating
 templating-tools
 nimble:restivus
+chart:chart
+mrt:moment
+richsilv:pikaday
 
