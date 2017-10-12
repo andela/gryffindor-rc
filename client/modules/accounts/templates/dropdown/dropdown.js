@@ -2,7 +2,7 @@ import { Reaction, Logger } from "/client/api";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Tags, StaticPages } from "./../../../../../lib/collections/collections";
+import { Tags, StaticPages } from "/lib/collections/collections";
 
 
 Template.staticPagesNav.onCreated(function () {

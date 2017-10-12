@@ -1,4 +1,4 @@
-import { StaticPages } from "../../../../../../../../lib/collections/collections";
+import { StaticPages } from "/lib/collections/collections";
 import { Template } from "meteor/templating";
 import * as CommonMark from "meteor/themeteorchef:commonmark";
 
