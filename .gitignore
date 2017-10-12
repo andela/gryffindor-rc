@@ -11,6 +11,7 @@
 *.seed
 *.sublime-project
 *.sublime-workspace
+.env
 
 jsdoc.json
 lib-cov
@@ -41,3 +42,5 @@ imports/plugins/custom/*
 !imports/plugins/custom/gryffindor
 
 .reaction/config.json
+
+!imports/plugins/custom/tour
