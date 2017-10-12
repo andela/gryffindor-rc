@@ -100,6 +100,12 @@ Meteor.publish("Product", function (productId) {
       }
     ]
   };
+  const observable = (revision) => {
+    if (!revision.parentDocument) {
+      return Products.findOne(revision.documentId);
+    }
+    return Products.findOne(revision.parentDocument);
+  };
 
   // Authorized content curators fo the shop get special publication of the product
   // all all relevant revisions all is one package
@@ -152,25 +158,14 @@ Meteor.publish("Product", function (productId) {
         }
       }).observe({
         added: (revision) => {
-          let product;
-          if (!revision.parentDocument) {
-            product = Products.findOne(revision.documentId);
-          } else {
-            product = Products.findOne(revision.parentDocument);
-          }
+          const product = observable(revision);
           if (product) {
             this.added("Products", product._id, product);
             this.added("Revisions", revision._id, revision);
           }
         },
         changed: (revision) => {
-          let product;
-          if (!revision.parentDocument) {
-            product = Products.findOne(revision.documentId);
-          } else {
-            product = Products.findOne(revision.parentDocument);
-          }
-
+          const product = observable(revision);
           if (product) {
             product.__revisions = [revision];
             this.changed("Products", product._id, product);
@@ -178,12 +173,7 @@ Meteor.publish("Product", function (productId) {
           }
         },
         removed: (revision) => {
-          let product;
-          if (!revision.parentDocument) {
-            product = Products.findOne(revision.documentId);
-          } else {
-            product = Products.findOne(revision.parentDocument);
-          }
+          const product = observable(revision);
           if (product) {
             product.__revisions = [];
             this.changed("Products", product._id, product);

@@ -236,6 +236,14 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         });
       }
     }
+    const observable = (revision) => {
+      if (!revision.documentType || revision.documentType === "product") {
+        return Products.findOne(revision.documentId);
+      }
+      if (revision.documentType === "image" || revision.documentType === "tag") {
+        return Products.findOne(revision.parentDocument);
+      }
+    };
 
     // Authorized content curators for the shop get special publication of the product
     // with all relevant revisions all is one package
@@ -321,25 +329,14 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         }).observe({
           added: (revision) => {
-            let product;
-            if (!revision.documentType || revision.documentType === "product") {
-              product = Products.findOne(revision.documentId);
-            } else if (revision.documentType === "image" || revision.documentType === "tag") {
-              product = Products.findOne(revision.parentDocument);
-            }
-
+            const product = observable(revision);
             if (product) {
               this.added("Products", product._id, product);
               this.added("Revisions", revision._id, revision);
             }
           },
           changed: (revision) => {
-            let product;
-            if (!revision.documentType || revision.documentType === "product") {
-              product = Products.findOne(revision.documentId);
-            } else if (revision.documentType === "image" || revision.documentType === "tag") {
-              product = Products.findOne(revision.parentDocument);
-            }
+            const product = observable(revision);
             if (product) {
               product.__revisions = [revision];
               this.changed("Products", product._id, product);
@@ -347,13 +344,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
           },
           removed: (revision) => {
-            let product;
-
-            if (!revision.documentType || revision.documentType === "product") {
-              product = Products.findOne(revision.documentId);
-            } else if (revision.docuentType === "image" || revision.documentType === "tag") {
-              product = Products.findOne(revision.parentDocument);
-            }
+            const product = observable(revision);
             if (product) {
               product.__revisions = [];
               this.changed("Products", product._id, product);
