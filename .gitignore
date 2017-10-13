@@ -44,3 +44,4 @@ imports/plugins/custom/*
 .reaction/config.json
 
 !imports/plugins/custom/tour
+selenium-server-standalone-3.0.0-beta2.jar

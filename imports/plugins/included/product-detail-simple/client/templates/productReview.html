@@ -1,0 +1,44 @@
+<template name="submitReview">
+  <div class="row show-review">
+    {{rating}}
+    <div id="reviews">
+      <h3 class="review-margin-bottom">Submit a review</h3>
+      <div>
+        <h5>Rate this product</h5>
+        {{> starsRating id='rating' mutable=true size=20 class="review-margin-bottom"}}
+      </div>
+      <div id="comment-box">
+        <h5>Comment</h5>
+        <textarea id="comment" style="max-width: 350px;" class="form-control" placeholder="Enter your comment..."></textarea>
+        <br>
+        <button type="submit" id="submit" class="btn btn-success">Submit Review</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="displayReviews">
+    <div class="userreview">
+      <h3>Product Reviews</h3>
+      {{#unless reviews}}
+        <p>No available reviews</p>
+      {{/unless}}
+      {{#if reviews}}
+        {{#each review in reviews}}
+          <div>
+            <b> {{review.username}} </b>
+          </div>
+          <div>
+            {{review.dateCreated}}
+          </div>
+          <div>
+            {{> starsRating rating=review.rating size=20}}
+          </div>
+          <div class="comment">
+            {{review.comment}}
+          </div>
+          <br>
+        {{/each}}
+      {{/if}}
+  </div>
+</template>

@@ -1,8 +1,18 @@
 import { Reaction, Logger } from "/client/api";
-import { Tags } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Tags, StaticPages } from "/lib/collections/collections";
+
+
+Template.staticPagesNav.onCreated(function () {
+  Meteor.subscribe("viewPages");
+});
+Template.staticPagesNav.helpers({
+  staticPages() {
+    return StaticPages.find({shopId: Reaction.shopId}).fetch();
+  }
+});
 
 Template.loginDropdown.events({
 
@@ -33,6 +43,17 @@ Template.loginDropdown.events({
     });
   },
 
+     /* Wallet form
+    * @param  {Event} event - jQuery Event
+    * @return {void}
+    */
+
+  "click #wallet": (event) => {
+    event.preventDefault();
+    FlowRouter.go("/wallet");
+  },
+
+  /**
   /**
    * Submit sign up form
    * @param  {Event} event - jQuery Event
@@ -68,4 +89,5 @@ Template.loginDropdown.events({
     }
     template.$(".dropdown-toggle").dropdown("toggle");
   }
+
 });

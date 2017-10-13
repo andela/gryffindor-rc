@@ -63,6 +63,11 @@ Template.ordersListSummary.events({
             Logger.warn(error);
           }
         });
+        Streamy.broadcast("cancel order", { data: "A user has cancelled an order" });
+        const timeout = setTimeout(() => {
+          Alerts.toast("You order was sussessfully cancelled", "success");
+          clearTimeout(timeout);
+        }, 3000);
       }
     });
   }
