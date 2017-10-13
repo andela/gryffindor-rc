@@ -6,7 +6,7 @@ import "../lib/api/paystackApi";
 
 let list = [];
 let pageList = [];
-let currentPage = 1;
+const currentPage = 1;
 const numberPerPage = 10;
 let numberOfPages;
 
@@ -60,16 +60,16 @@ function loadList() {
   updateNavButtonState();
 }
 
-const getPaystackSettings = () => {
-  Packages.findOne({
-    name: "paystack",
-    shopId: Reaction.getShopId()
-  });
-  return {
-    public: "pk_test_c277fce81c44dcbcf966d52890be7e2cd1694252",
-    secret: "sk_test_03d41f4603278e768111c4b5afcff64be51a4445"
-  };
-};
+// const getPaystackSettings = () => {
+//   Packages.findOne({
+//     name: "paystack",
+//     shopId: Reaction.getShopId()
+//   });
+//   return {
+//     public: "pk_test_c277fce81c44dcbcf966d52890be7e2cd1694252",
+//     secret: "sk_test_03d41f4603278e768111c4b5afcff64be51a4445"
+//   };
+// };
 
 const finalizeDeposit = paystackMethod => {
   Meteor.call(
@@ -90,15 +90,15 @@ const finalizeDeposit = paystackMethod => {
 function handlePayment(result) {
   const type = "deposit";
   const transactionId = result.reference;
-  const paystackConfig = getPaystackSettings();
-  HTTP.call(
+  Meteor.call("paystack/keys", (err, keys) => {
+    HTTP.call(
     "GET",
     `https://api.paystack.co/transaction/verify/${transactionId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${paystackConfig.secret}`
-      }
-    },
+      {
+        headers: {
+          Authorization: `Bearer ${keys.secret}`
+        }
+      },
     (error, response) => {
       if (error) {
         Alerts.toast("Unable to verify payment", "error");
@@ -129,18 +129,19 @@ function handlePayment(result) {
       }
     }
   );
+  });
 }
 
 // Paystack payment
 const payWithPaystack = (email, amount) => {
-  const paystackConfig = getPaystackSettings();
-  const handler = PaystackPop.setup({
-    key: paystackConfig.public,
-    email: email,
-    amount: amount * 100,
-    callback: handlePayment
+  Meteor.call("paystack/keys", (err, keys) => {
+    PaystackPop.setup({
+      key: keys.public,
+      email: email,
+      amount: amount * 100,
+      callback: handlePayment
+    }).openIframe();
   });
-  handler.openIframe();
 };
 
 Template.wallet.events({
@@ -149,11 +150,11 @@ Template.wallet.events({
     const accountDetails = Accounts.find(Meteor.userId()).fetch();
     const userMail = accountDetails[0].emails[0].address;
     const amount = parseInt(document.getElementById("depositAmount").value, 10);
-    const mailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$/i;
-    if (!mailRegex.test(userMail)) {
-      Alerts.toast("Invalid email address", "error");
-      return false;
-    }
+    // const mailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$/i;
+    // if (!mailRegex.test(userMail)) {
+    //   Alerts.toast("Invalid email address", "error");
+    //   return false;
+    // }
     if (amount < 0) {
       Alerts.toast("Amount cannot be negative", "error");
       return false;
