@@ -1,5 +1,8 @@
 import { BrowserPolicy } from "meteor/browser-policy-common";
 import { WebApp } from "meteor/webapp";
+import url from "url";
+
+const { hostname } = url.parse(Meteor.absoluteUrl());
 
 
 /**
@@ -24,10 +27,17 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.framing.allowAll();
 }
 
+BrowserPolicy.content.allowConnectOrigin(`ws://${hostname}`);
+BrowserPolicy.content.allowConnectOrigin(`wss://${hostname}`);
+
 BrowserPolicy.content.allowOriginForAll("*.facebook.com");
 BrowserPolicy.content.allowOriginForAll("*.fbcdn.net");
 BrowserPolicy.content.allowOriginForAll("connect.facebook.net");
 BrowserPolicy.content.allowOriginForAll("*.googleusercontent.com");
+
+BrowserPolicy.content.allowOriginForAll("twitter.com");
+BrowserPolicy.content.allowOriginForAll("*.twitter.com");
+BrowserPolicy.content.allowOriginForAll("*.twimg.com");
 
 BrowserPolicy.content.allowImageOrigin("fbcdn-profile-a.akamaihd.net");
 BrowserPolicy.content.allowImageOrigin("secure.gravatar.com");

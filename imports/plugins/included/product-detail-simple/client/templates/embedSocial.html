@@ -1,0 +1,19 @@
+<template name="embedFacebook">
+  <div class="{{testDisplay.facebook}}">
+    {{#if facebook}}
+    <iframe src={{facebook}} width="600" height="350" style="border:none;overflow:hidden"
+      scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    {{/if}}
+  </div>
+</template>
+
+<template name="embedTwitter">
+  <div style="padding-right: 60px; padding-bottom: 10px;">
+    <div class="{{testDisplay.twitter}}" style="max-height: 600px; overflow-y: scroll;">
+      {{#if twitter}}
+      <a class="twitter-timeline" href="{{twitter}}">Tweets by {{twitter}}</a>
+      <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      {{/if}}
+    </div>
+  </div>
+</template>
