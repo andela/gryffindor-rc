@@ -63,12 +63,10 @@ describe("braintree/refund/create", function () {
     Meteor.call("braintree/refund/create", paymentMethod, paymentMethod.amount, function (error, result) {
       refundResult = result;
       refundError = error;
+      expect(refundError).to.be.undefined;
+      expect(refundResult).to.not.be.undefined;
+      expect(refundResult.saved).to.be.true;
+      done();
     });
-
-
-    expect(refundError).to.be.undefined;
-    expect(refundResult).to.not.be.undefined;
-    expect(refundResult.saved).to.be.true;
-    done();
   });
 });
