@@ -18,16 +18,15 @@ Meteor.methods({
       if (transactions.to) {
         const recipient = Accounts.findOne({ "emails.address": transactions.to });
         const sender = Accounts.findOne(userId);
-        if (!recipient) {
-          return 2;
-        }
+        if (recipient) {
                 // deposit for the recipient
-        Meteor.call("wallet/transaction", recipient._id, {
-          amount,
-          from: sender.emails[0].address,
-          date: new Date(),
-          transactionType: "Credit"
-        });
+          Meteor.call("wallet/transaction", recipient._id, {
+            amount,
+            from: sender.emails[0].address,
+            date: new Date(),
+            transactionType: "Credit"
+          });
+        }
       }
       balanceOptions = { balance: -amount };
     }
