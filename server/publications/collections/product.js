@@ -1,6 +1,44 @@
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+
+export function findProductMedia(publicationInstance, productIds) {
+  const shopId = Reaction.getShopId();
+  const selector = {};
+
+  if (!shopId) {
+    return publicationInstance.ready();
+  }
+
+  if (Array.isArray(productIds)) {
+    selector["metadata.productId"] = {
+      $in: productIds
+    };
+  } else {
+    selector["metadata.productId"] = productIds;
+  }
+
+  if (shopId) {
+    selector["metadata.shopId"] = shopId;
+  }
+
+  // No one needs to see archived images on products
+  selector["metadata.workflow"] = {
+    $nin: ["archived"]
+  };
+
+  // Product editors can see both published and unpublished images
+  if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
+    selector["metadata.workflow"].$in = [null, "published"];
+  }
+
+  return Media.find(selector, {
+    sort: {
+      "metadata.priority": 1
+    }
+  });
+}
+
 
 /**
  * product detail publication
@@ -10,7 +48,7 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 Meteor.publish("Product", function (productId) {
   check(productId, Match.OptionalOrNull(String));
   if (!productId) {
-    Logger.info("ignoring null request on Product subscription");
+    Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
   let _id;
@@ -22,7 +60,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
-  selector.isDeleted = {$in: [null, false]};
+  selector.isDeleted = { $in: [null, false] };
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
@@ -31,7 +69,7 @@ Meteor.publish("Product", function (productId) {
     };
   }
   // TODO review for REGEX / DOS vulnerabilities.
-  if (productId.match(/^[A-Za-z0-9]{17}$/)) {
+  if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
     selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
@@ -51,8 +89,9 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
-    isDeleted: {$in: [null, false]},
+    isDeleted: { $in: [null, false] },
     $or: [
+      { handle: _id },
       { _id: _id },
       {
         ancestors: {
@@ -60,6 +99,12 @@ Meteor.publish("Product", function (productId) {
         }
       }
     ]
+  };
+  const observable = (revision) => {
+    if (!revision.parentDocument) {
+      return Products.findOne(revision.documentId);
+    }
+    return Products.findOne(revision.parentDocument);
   };
 
   // Authorized content curators fo the shop get special publication of the product
@@ -70,7 +115,10 @@ Meteor.publish("Product", function (productId) {
     };
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const handle = Products.find(selector).observeChanges({
+      const productCursor = Products.find(selector);
+      const productIds = productCursor.map(p => p._id);
+
+      const handle = productCursor.observeChanges({
         added: (id, fields) => {
           const revisions = Revisions.find({
             "documentId": id,
@@ -108,21 +156,29 @@ Meteor.publish("Product", function (productId) {
             "revision/published"
           ]
         }
-      }).observeChanges({
-        added: (id, fields) => {
-          this.added("Revisions", id, fields);
+      }).observe({
+        added: (revision) => {
+          const product = observable(revision);
+          if (product) {
+            this.added("Products", product._id, product);
+            this.added("Revisions", revision._id, revision);
+          }
         },
-        changed: (id, fields) => {
-          const revision = Revisions.findOne(id);
-          const product = Products.findOne(revision.documentId);
-
-          product.__revisions = [revision];
-
-          this.changed("Products", product._id, product);
-          this.changed("Revisions", id, fields);
+        changed: (revision) => {
+          const product = observable(revision);
+          if (product) {
+            product.__revisions = [revision];
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, revision);
+          }
         },
-        removed: (id) => {
-          this.removed("Revisions", id);
+        removed: (revision) => {
+          const product = observable(revision);
+          if (product) {
+            product.__revisions = [];
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
+          }
         }
       });
 
@@ -131,13 +187,29 @@ Meteor.publish("Product", function (productId) {
         handle2.stop();
       });
 
-      return this.ready();
+      return [
+        findProductMedia(this, productIds)
+      ];
     }
 
-    // Revision control is disabled
-    return Products.find(selector);
+    // Revision control is disabled, but is an admin
+    const productCursor = Products.find(selector);
+    const productIds = productCursor.map(p => p._id);
+    const mediaCursor = findProductMedia(this, productIds);
+
+    return [
+      productCursor,
+      mediaCursor
+    ];
   }
 
-  // Everyone else gets the standard, visibile products and variants
-  return Products.find(selector);
+  // Everyone else gets the standard, visible products and variants
+  const productCursor = Products.find(selector);
+  const productIds = productCursor.map(p => p._id);
+  const mediaCursor = findProductMedia(this, productIds);
+
+  return [
+    productCursor,
+    mediaCursor
+  ];
 });
