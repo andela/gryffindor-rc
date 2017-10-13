@@ -8,6 +8,7 @@ let list = [];
 let pageList = [];
 let currentPage = 1;
 const numberPerPage = 10;
+let numberOfPages;
 
 Template.wallet.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
@@ -40,22 +41,13 @@ function makeList() {
 
 function getNumberOfPages() {
   list = Template.instance().state.get("transactionsList");
-  if (list.length > 0) {
-    return Math.ceil(list.length / numberPerPage);
-  }
+  return list.length > 0 ? Math.ceil(list.length / numberPerPage) : 0;
 }
 
-function check() {
-  document.getElementById("next").disabled = currentPage === numberOfPages
-    ? true
-    : false;
-  document.getElementById("previous").disabled = currentPage === 1
-    ? true
-    : false;
-  document.getElementById("first").disabled = currentPage === 1 ? true : false;
-  document.getElementById("last").disabled = currentPage === numberOfPages
-    ? true
-    : false;
+function updateNavButtonState() {
+  document.getElementById("previous").disabled = currentPage === 1;
+  document.getElementById("first").disabled = currentPage === 1;
+  document.getElementById("last").disabled = currentPage === numberOfPages;
 }
 
 
@@ -63,11 +55,9 @@ function loadList() {
   list = Template.instance().state.get("transactionsList");
   const begin = (currentPage - 1) * numberPerPage;
   const end = begin + numberPerPage;
-  if (list[0] !== undefined) {
-    pageList = list.slice(begin, end);
-    Template.instance().state.set("transactions", pageList);
-    check();
-  }
+  pageList = list.slice(begin, end);
+  Template.instance().state.set("transactions", pageList);
+  updateNavButtonState();
 }
 
 const getPaystackSettings = () => {
@@ -109,7 +99,7 @@ function handlePayment(result) {
         Authorization: `Bearer ${paystackConfig.secret}`
       }
     },
-    function (error, response) {
+    (error, response) => {
       if (error) {
         Alerts.toast("Unable to verify payment", "error");
       } else if (response.data.data.status !== "success") {
@@ -178,8 +168,7 @@ Template.wallet.events({
     event.preventDefault();
     const amount = parseInt(document.getElementById("transferAmount").value, 10);
     if (amount > Template.instance().state.get("details").balance) {
-      Alerts.toast("Insufficient Balance", "error");
-      return false;
+      return Alerts.toast("Insufficient Balance", "error");
     }
     const recipient = document.getElementById("recipient").value;
     const transaction = { amount, to: recipient, date: new Date(), transactionType: "Debit" };
@@ -205,12 +194,10 @@ Template.wallet.helpers({
   getTransactions() {
     makeList();
     loadList();
-    const transactions = Template.instance().state.get("transactions");
-    return transactions;
+    return Template.instance().state.get("transactions");
   },
   getCurrentPage() {
-    const currentPageNum = Template.instance().state.get("currentPageNum");
-    return currentPageNum;
+    return Template.instance().state.get("currentPageNum");
   },
   formatDate(date) {
     return moment(date).format("dddd, MMMM Do YYYY, h:mm:ssa");
