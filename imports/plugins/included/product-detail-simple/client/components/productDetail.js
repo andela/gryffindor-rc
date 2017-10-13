@@ -71,7 +71,7 @@ class ProductDetail extends Component {
             <div className="switch-middle">
               <select className="form-control select-category" name="category" onChange={this.getSelectedOption} value={this.state.selectedOption}>
                 <option value="physical">Physical Products</option>
-                <option value="digital">Digital Products</option>
+                <option className="digital-category" value="digital">Digital Products</option>
               </select>
             </div>
       );
