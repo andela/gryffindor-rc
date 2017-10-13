@@ -4,6 +4,7 @@ import { Blaze } from "meteor/blaze";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
+import { Streamy } from "meteor/yuukan:streamy";
 
 
 Template.coreAdminLayout.onRendered(function () {
@@ -72,6 +73,9 @@ Template.coreAdminLayout.helpers({
     if (props.type === "seperator") {
       return true;
     }
+    Streamy.on("new order", (d, s) => {
+      Alerts.toast("A new order has being placed", "success");
+    });
     return false;
   },
 
