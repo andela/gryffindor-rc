@@ -8,4 +8,26 @@
     {{!-- Use old product detail page --}}
     {{> productDetail }}
   {{/if}}
+
+  <div class="container-fluid">
+    <div class="row productRow">
+      <div class="col-sm-6 productContainer">
+        {{>displayReviews}}
+      </div> 
+      <div class="col-sm-6">
+         {{>embedTwitter}}
+      </div>
+    </div>
+
+    <div class="row productRow" style="padding-bottom: 70px;">
+      <div class="col-sm-6">
+        {{>submitReview}}
+      </div>
+      <div class="col-sm-6">
+         {{>embedFacebook}}
+      </div>
+    </div>
+  </div>
 </template>
+
+
