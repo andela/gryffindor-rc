@@ -70,8 +70,7 @@ Template.walletPayment.events({
     const cartAmount = Number(Cart.findOne().cartTotal());
     const currency = Shops.findOne().currency;
     if (cartAmount > balance) {
-      Alerts.toast("Insufficient balance", "error");
-      return false;
+      return Alerts.toast("Insufficient balance", "error");
     }
     transactionId = Random.id();
     Meteor.call("wallet/transaction", Meteor.userId(), {
