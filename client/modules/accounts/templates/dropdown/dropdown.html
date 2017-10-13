@@ -36,8 +36,8 @@
     {{> userAccountsDropdown}}
     <!--administrative shortcut icons -->
     {{#each reactionApps provides="shortcut" enabled=true}}
-      <li class="dropdown-apps-icon">
-        <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
+    <li class="dropdown-apps-icon">
+      <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
           <i class="{{icon}}"></i>
           <span class="icon-text">
             {{i18n i18nKeyLabel label}}
@@ -45,20 +45,21 @@
         </a>
       </li>
     {{/each}}
+    {{> walletMenu}}
   </ul>
 </template>
 
 <template name="userAccountsDropdown">
   <!--user account shortcut icons -->
   {{#each reactionApps provides="userAccountDropdown" enabled=true}}
-    <li class="dropdown-apps-icon">
-      <a id="user-dropdown-apps-{{name}}" title="{{label}}">
+  <li class="dropdown-apps-icon">
+    <a id="user-dropdown-apps-{{name}}" title="{{label}}">
         <i class="{{icon}}"></i>
         <span class="icon-text">
           {{i18n i18nKeyLabel label}}
         </span>
       </a>
-    </li>
+  </li>
   {{else}}
   <li class="dropdown-apps-icon">
     <i class="fa fa-user-secret"></i>
@@ -67,21 +68,30 @@
   {{/each}}
 </template>
 <template name="staticPagesNav">
-<div class="dropdown" role="menu">
-  <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-  data-delay="1000">
-    <span id="looged-in-display-name">Pages<b class="caret"></b></span>
+  <div class="dropdown" role="menu">
+    <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+      <span id="looged-in-display-name">Pages<b class="caret"></b></span>
+    </div>
+    <div class="dropdown-menu static-pages-dropdown" role="menu">
+      {{#each staticPage in staticPages}}
+      <li class="dropdown-apps-icon">
+        <a href="/pages/{{staticPage.slug}}" id="{{staticPage.title}}" title="{{staticPage.title}}">
+          <i class=""></i>
+          <span class="icon-text">{{staticPage.title}}</span>
+        </a>
+      </li>
+      {{/each}}
+    </div>
   </div>
-  <div class="dropdown-menu static-pages-dropdown" role="menu">
-    {{#each staticPage in staticPages}}
-    <li class="dropdown-apps-icon">
-      <a href="/pages/{{staticPage.slug}}" id="{{staticPage.title}}"
-      title="{{staticPage.title}}">
-<i class=""></i>
-<span class="icon-text">{{staticPage.title}}</span>
- </a>
-    </li>
-    {{/each}}
-  </div>
-</div>
- </template>
+</template>
+
+<template name="walletMenu">
+  <li id="wallet" class="dropdown-apps-icon">
+    <a href={{pathFor 'wallet'}} title="My Wallet">
+       <i class="fa fa-google-wallet"></i>
+       <span class="icon-text">
+         My Wallet
+       </span>
+     </a>
+  </li>
+</template>
